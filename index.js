@@ -1,3 +1,9 @@
+const express = require('express'),
+  morgan = require('morgan'),
+
+const app = express();
+
+
 let topMovies = [
   {
     title: 'The Shawshank Redemption',
@@ -60,3 +66,17 @@ let topMovies = [
     runTime: '2h 58m'
   },
 ];
+
+app.use(morgan('common'));
+
+app.get('/', (req, res) => {
+  res.send('Welcome to myFlix!');
+});
+
+app.get('/movies', (req, res) => {
+  res.json(topMovies);
+});
+
+app.listen(8080, () => {
+  console.log('Your app is listening on port 8080.');
+});
