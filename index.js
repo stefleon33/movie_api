@@ -69,6 +69,9 @@ let topMovies = [
 
 app.use(morgan('common'));
 
+app.use(express.static('public'));
+
+
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix!');
 });
