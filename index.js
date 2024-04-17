@@ -221,14 +221,9 @@ let movies = [
   },
 ];
 
-app.use(morgan('common'));
-
-app.use(express.static('public'));
 
 
-app.get('/', (req, res) => {
-  res.send('Welcome to myFlix!');
-});
+
 
 app.get('/movies', (req, res) => {
   res.json(topMovies);
@@ -241,4 +236,4 @@ app.listen(8080, () => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
-});
+}); */
