@@ -311,6 +311,17 @@ app.get('/movies/:title', (req, res) => {
   }
 })
 
+//READ Return data about a genre (description) by name/title
+app.get('/movies/genre/:genreName', (req, res) => {
+  const { genreName } = req.params;
+  const genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send('No such genre.')
+  }
+})
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
