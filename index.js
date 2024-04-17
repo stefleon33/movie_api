@@ -17,6 +17,9 @@ let users =[
     favoriteMovies: ["The Shawshank Redemption"]
   },
 ]
+
+let movies = [
+  {
     "Title": "The Shawshank Redemption",
     "Description":"Over the course of several years, two convicts form a friendship, seeking consolation and, eventually, redemption through basic compassion.",
     //"Stars":["Tim Robbins","Morgan Freeman","Bob Gunton"],
