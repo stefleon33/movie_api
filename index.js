@@ -97,10 +97,24 @@ let users =[
     "Featured":false
   },
   {
-    title: '12 Angry Men',
-    releaseDate: '1957',
-    rating: 'Approved',
-    runTime: '1h 36m'
+    "Title": "12 Angry Men",
+    "Description":"The jury in a New York City murder trial is frustrated by a single member whose skeptical caution forces them to more carefully consider the evidence before jumping to a hasty verdict.",
+    //"Stars":["Henry Fonda","Lee J. Cobb", "Martin Balsam"],
+    "Release date": "1957",
+    "Rating": "Approved",
+    "Run time": "1h 36m",
+    "Genre":{
+      "Name":"Crime", //"Drama"],
+      "Description":"Crime films revolve around the world of criminals, law enforcement, and the pursuit of justice. They often depict the planning and execution of criminal activities, the investigation of crimes, and the moral ambiguity that surrounds them. Themes such as power, betrayal, and morality are common, and protagonists may include detectives, criminals, or antiheroes. Crime films can range from gritty and realistic portrayals to stylish and stylized interpretations of the criminal underworld."
+    },
+    "Director":{
+      "Name":"Sidney Lumet",
+      "Bio":"Baruch Lumet was born on September 16, 1898 in Warsaw, Poland, Russian Empire [now Warsaw, Mazowieckie, Poland]. He was an actor and casting director, known for The Killer Shrews (1959), Everything You Always Wanted to Know About Sex * But Were Afraid to Ask (1972) and The Pawnbroker (1964). He was married to Eugenia Wermus. He died on February 8, 1992.",
+      "Birth":"September 16, 1898",
+      "Death":"February 8, 1992",
+    },
+    "ImageURL":"",
+    "Featured":false
   },
   {
     title: 'Schindler\'s List',
