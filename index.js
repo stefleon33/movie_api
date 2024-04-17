@@ -294,9 +294,11 @@ app.delete('/users/:id', (req, res) =>{
   }
 })
 
+//READ. Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-  res.json(topMovies);
-});
+  res.status(200).json(movies);
+})
+
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
