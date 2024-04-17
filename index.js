@@ -5,18 +5,18 @@ const express = require('express'),
 
   app.use(bodyParser.json());
 
-let topMovies = [
+let users =[
   {
-    title: 'The Shawshank Redemption',
-    releaseDate: '1994',
-    rating: 'R',
-    runTime: '2h 22m'
+    id: 1,
+    name:"Kim",
+    favoriteMovies: []
   },
   {
-    title: 'The Godfather',
-    releaseDate: '1972',
-    rating: 'R',
-    runTime: '2h 55m'
+    id: 2,
+    name:"Joe",
+    favoriteMovies: ["The Shawshank Redemption"]
+  },
+]
   },
   {
     title: 'The Dark Knight',
