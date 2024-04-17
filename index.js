@@ -299,6 +299,18 @@ app.get('/movies', (req, res) => {
   res.status(200).json(movies);
 })
 
+//READ Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+app.get('/movies/:title', (req, res) => {
+  const { title } = req.params;
+  const movie = movies.find( movie => movie.Title === title );
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('No such movie.')
+  }
+})
+
 
 app.listen(8080, () => {
   console.log('Your app is listening on port 8080.');
