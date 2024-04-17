@@ -249,7 +249,20 @@ app.put('/users/:id', (req, res) =>{
   }
 })
 
+//CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
+app.post('/users/:id/:movieTitle', (req, res) =>{
+  const { id, movieTitle } = req.params;
+  const updatedUser = req.body;
+  
+  let user = users.find( user => user.id == id);
 
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(200).send(`${movieTitle} has been added to user ${id}'s array.`);
+  } else {
+    res.status(400).send('No such user.')
+  }
+})
 
 
 app.get('/movies', (req, res) => {
