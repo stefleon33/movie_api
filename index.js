@@ -117,10 +117,24 @@ let users =[
     "Featured":false
   },
   {
-    title: 'Schindler\'s List',
-    releaseDate: '1993',
-    rating: 'R',
-    runTime: '3h 15m'
+    "Title": "Schindler's List",
+    "Description":"In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
+    //"Stars":["Liam Neeson","Ralph Fiennes","Ben Kingsley"],
+    "Release date": "1993",
+    "Rating": "R",
+    "Run time": "3h 15m",
+    "Genre":{
+      "Name":"Biography", //"Drama", "History",
+      "Description":"Biography films tell the life story of a real person or historical figure, providing insight into their achievements, struggles, and impact on the world. These films aim to portray the subject with accuracy and authenticity, often drawing from biographical sources such as memoirs, interviews, and historical records. Biopics can cover a wide range of individuals, from political leaders and cultural icons to artists, athletes, and ordinary people who have made extraordinary contributions to society."
+    },
+    "Director":{
+      "Name":"Steven Spielberg",
+      "Bio":"One of the most influential personalities in the history of cinema, Steven Spielberg is Hollywood's best known director and one of the wealthiest filmmakers in the world. He has an extraordinary number of commercially successful and critically acclaimed credits to his name, either as a director, producer or writer since launching the summer blockbuster with Jaws (1975), and he has done more to define popular film-making since the mid-1970s than anyone else. Steven Allan Spielberg was born in 1946 in Cincinnati, Ohio, to Leah Frances (Posner), a concert pianist and restaurateur, and Arnold Spielberg, an electrical engineer who worked in computer development. His parents were both born to Russian Jewish immigrant families. Steven spent his younger years in Haddon Township, New Jersey, Phoenix, Arizona, and later Saratoga, California. He went to California State University Long Beach, but dropped out to pursue his entertainment career. Among his early directing efforts were Battle Squad (1961), which combined World War II footage with footage of an airplane on the ground that he makes you believe is moving. He also directed Escape to Nowhere (1961), which featured children as World War Two soldiers, including his sister Anne Spielberg, and The Last Gun (1959), a western. All of these were short films. The next couple of years, Spielberg directed a couple of movies that would portend his future career in movies. In 1964, he directed Firelight (1964), a movie about aliens invading a small town. In 1967, he directed Slipstream (1967), which was unfinished. However, in 1968, he directed Amblin' (1968), which featured the desert prominently, and not the first of his movies in which the desert would feature. Amblin' also became the name of his production company, which turned out such classics as E.T. the Extra-Terrestrial (1982). Spielberg had a unique and classic early directing project, Duel (1971), with Dennis Weaver. In the early 1970s, Spielberg was working on TV, directing among others such series as Rod Serling's Night Gallery (1969), Marcus Welby, M.D. (1969) and Murder by the Book (1971). All of his work in television and short films, as well as his directing projects, were just a hint of the wellspring of talent that would dazzle audiences all over the world.",
+      "Birth":"December 18, 1946",
+      "Death":"NA",
+    },
+    "ImageURL":"",
+    "Featured":false
   },
   {
     title: 'The Lord of the Rings: The Return of the King',
