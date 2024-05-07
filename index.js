@@ -151,7 +151,7 @@ app.delete('/users/:Username', async (req, res) => {
 
 //READ. Return a list of ALL movies to the user
 app.get('/movies', async (req, res) => {
-  await movies.find()
+  await Movies.find()
     .then((movies) => {
       res.json(movies);
     })
@@ -163,7 +163,7 @@ app.get('/movies', async (req, res) => {
 
 //READ Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
 app.get('/movies/:Title', async (req, res) => {
-  await movies.findOne({ Title: req.params.Title })
+  await Movies.findOne({ Title: req.params.Title })
   .then((movies) => {
     res.json(movies);
   })
@@ -175,7 +175,7 @@ app.get('/movies/:Title', async (req, res) => {
 
 //READ Return data about a genre (description) by name/title
 app.get('/movies/Genre/:genreName', async (req, res) => {
-  await movies.findOne({ Genre: req.params. genreName})
+  await Movies.findOne({ "Genre.Name": req.params. genreName})
   .then((movies) => {
     res.json(movies);
   })
@@ -187,7 +187,7 @@ app.get('/movies/Genre/:genreName', async (req, res) => {
 
 //READ Return data about a director (bio, birth year, death year) by name
 app.get('/movies/director/:directorName', async (req, res) => {
-  await movies.findOne({ Director: req.params. directorName})
+  await Movies.findOne({ "Director.Name": req.params. directorName})
   .then((movies) => {
     res.json(movies);
   })
