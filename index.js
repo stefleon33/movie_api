@@ -120,8 +120,8 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 
 //DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
 app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
-  await Users.findOneAndRemove({ Username: req.params.Username }, {
-     $pull: { FavoriteMovies: req.params.MovieID }
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $pull: { FavoriteMovies : req.params.MovieID }
    },
    { new: true }) // This line makes sure that the updated document is returned
   .then((updatedUser) => {
@@ -135,7 +135,7 @@ app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
 
 //DELETE Allow existing users to deregister (showing only a text that a user email has been removed)
 app.delete('/users/:Username', async (req, res) => {
-  await Users.findOneAndRemove({ Username: req.params.Username })
+  await Users.findOneAndUpdate({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
