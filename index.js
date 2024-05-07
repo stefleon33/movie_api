@@ -297,9 +297,16 @@ app.delete('/users/:id', (req, res) =>{
 })
 
 //READ. Return a list of ALL movies to the user
-app.get('/movies', (req, res) => {
-  res.status(200).json(movies);
-})
+app.get('/movies', async (req, res) => {
+  await movies.find()
+    .then((movies) => {
+      res.json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});  
 
 //READ Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
 app.get('/movies/:Title', async (req, res) => {
