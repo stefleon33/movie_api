@@ -326,16 +326,16 @@ app.get('/movies/genre/:genreName', (req, res) => {
 })
 
 //READ Return data about a director (bio, birth year, death year) by name
-app.get('/movies/director/:directorName', (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find( movie => movie.Director.Name === directorName ).Director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send('no such director')
-  }
-})
+app.get('/movies/director/:directorName', async (req, res) => {
+  await movies.findOne({ Director: req.params. directorName})
+  .then((movies) => {
+    res.json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});  
 
 
 /* app.use(express.static('public'));
