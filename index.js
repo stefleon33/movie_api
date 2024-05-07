@@ -258,20 +258,7 @@ app.post('/users', async (req, res) => {
   });
 });
 
-//UPDATE Allow users to update their user info (username)
-app.put('/users/:id', (req, res) =>{
-  const { id } = req.params;
-  const updatedUser = req.body;
-  
-  let user = users.find( user => user.id == id);
 
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).send(user);
-  } else {
-    res.status(400).send('No such user.')
-  }
-})
 
 //CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
 app.post('/users/:id/:movieTitle', (req, res) =>{
@@ -279,6 +266,34 @@ app.post('/users/:id/:movieTitle', (req, res) =>{
   const updatedUser = req.body;
   
   let user = users.find( user => user.id == id);
+//UPDATE a user's info, by username
+/* We’ll expect JSON in this format
+{
+  Username: String,
+  (required)
+  Password: String,
+  (required)
+  Email: String,
+  (required)
+  Birthday: Date
+}*/
+app.put('/users/:Username', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+  { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  })
 
   if (user) {
     user.favoriteMovies.push(movieTitle);
