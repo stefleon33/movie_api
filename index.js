@@ -282,12 +282,6 @@ app.get('/users/:Username', async (req, res) => {
     });
 });  
 
-//CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
-app.post('/users/:id/:movieTitle', (req, res) =>{
-  const { id, movieTitle } = req.params;
-  const updatedUser = req.body;
-  
-  let user = users.find( user => user.id == id);
 //UPDATE a user's info, by username
 /* We’ll expect JSON in this format
 {
@@ -317,14 +311,22 @@ app.put('/users/:Username', async (req, res) => {
     res.status(500).send('Error: ' + err);
   })
 
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array.`);
-  } else {
-    res.status(400).send('No such user.')
-  }
-})
+});
 
+//CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});
 
 //DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
 app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
