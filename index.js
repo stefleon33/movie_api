@@ -302,16 +302,16 @@ app.get('/movies', (req, res) => {
 })
 
 //READ Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
-app.get('/movies/:title', (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find( movie => movie.Title === title );
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('No such movie.')
-  }
-})
+app.get('/movies/:Title', async (req, res) => {
+  await movies.findOne({ Title: req.params.Title })
+  .then((movies) => {
+    res.json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});  
 
 //READ Return data about a genre (description) by name/title
 app.get('/movies/Genre/:genreName', async (req, res) => {
