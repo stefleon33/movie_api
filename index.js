@@ -266,20 +266,21 @@ app.post('/users/:id/:movieTitle', (req, res) =>{
   }
 })
 
-//DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
-app.delete('/users/:id/:movieTitle', (req, res) =>{
-  const { id, movieTitle } = req.params;
-  const updatedUser = req.body;
-  
-  let user = users.find( user => user.id == id);
 
-  if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter (title => title !== movieTitle);
-    res.status(200).send(`${movieTitle} has been removed from user ${id}'s array.`);
-  } else { 
-    res.status(400).send('no such user')
-  }
-})
+//DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndRemove({ Username: req.params.Username }, {
+     $pull: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err); 
+  });
+});
 
 //DELETE Allow existing users to deregister (showing only a text that a user email has been removed)
 app.delete('/users/:Username', async (req, res) => {
