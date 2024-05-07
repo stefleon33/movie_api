@@ -270,6 +270,17 @@ app.get('/users', async (req, res) => {
     });
 });
 
+//READ Get a user by username
+app.get('/users/:Username', async (req, res) => {
+  await Users.findOne({ Username: req.params.Username })
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});  
 
 //CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
 app.post('/users/:id/:movieTitle', (req, res) =>{
