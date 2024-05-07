@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
-                    <td>/movies/[title]</td>
+                    <td>/movies/:Title</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about a single movie, containing description, genre, director, image URL, whether it’s featured or not. Example:<br>
@@ -85,7 +85,7 @@
                 </tr>
                 <tr>
                     <td>Return data about a genre (description) by name/title</td>
-                    <td>/movies/genre/[genreName]</td>
+                    <td>/movies/Genre/:genreName</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about a genre (description) by name/title. Example:<br>
@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <td>Return data about a director (bio, birth year, death year) by name</td>
-                    <td>/movies/director/[directorName]</td>
+                    <td>/movies/director/:directorName</td>
                     <td>GET</td>
                     <td>None</td>
                     <td>A JSON object holding data about a director (bio, birth year, death year) by name. Example:<br>
@@ -128,28 +128,28 @@
                 </tr>
                 <tr>
                     <td>Allow users to update their user info (username)</td>
-                    <td>/users/[id]</td>
+                    <td>/users/:Username</td>
                     <td>PUT</td>
                     <td>None</td>
                     <td>A text message indicating the user info that was updated</td>
                 </tr>
                 <tr>
                     <td>Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)</td>
-                    <td>/users/[id]/[movieTitle]</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>POST</td>
                     <td>None</td>
                     <td>A text message indicating the user's list of favorite movies was updated</td>
                 </tr>
                 <tr>
                     <td>Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)</td>
-                    <td>/users/[id]/[movieTitle]</td>
+                    <td>/users/:Username/movies/:MovieID</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td>A text message indicating the user's list of favorite movies was updated</td>
                 </tr>
                 <tr>
                     <td>Allow existing users to deregister (showing only a text that a user email has been removed)</td>
-                    <td>/users/[id]</td>
+                    <td>/users/:Username</td>
                     <td>DELETE</td>
                     <td>None</td>
                     <td>A text message indicating the user info that was successfully removed</td>
