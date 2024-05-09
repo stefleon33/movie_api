@@ -13,6 +13,12 @@ const express = require('express'),
 
   app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
+
 //CREATE Allow new users to register
 /* We'll expect JSON in this format
 {
