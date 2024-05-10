@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors());
 
+const bcrypt = require('bcrypt');
+
 let auth = require('./auth')(app);
 
 const passport = require('passport');
