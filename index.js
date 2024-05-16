@@ -95,7 +95,11 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 });
 
 //READ Get a user by username
-app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }),
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric()
+], async (req, res) => {
   await Users.findOne({ Username: req.params.Username })
     .then((users) => {
       res.json(users);
@@ -117,7 +121,8 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), as
   (required)
   Birthday: Date
 }*/
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), 
+[
   check('Username', 'Username is required').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
   check('Password', 'Password is required').not().isEmpty(),
@@ -154,7 +159,12 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
 });
 
 //CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('MovieID', 'MovieID is required').not().isEmpty()
+], async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
@@ -169,7 +179,12 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 //DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), 
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('MovieID', 'MovieID is required').not().isEmpty()
+], async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $pull: { FavoriteMovies : req.params.MovieID }
    },
@@ -184,7 +199,11 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
 });
 
 //DELETE Allow existing users to deregister (showing only a text that a user email has been removed)
-app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric()
+], async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
