@@ -202,7 +202,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
   check('Username', 'Username is required').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric()
 ], async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.params.Username })
+  await Users.findOneAndDelete({ Username: req.params.Username })
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
