@@ -12,8 +12,7 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
-  app.use(bodyParser.json());
-
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cors = require('cors');
@@ -26,61 +25,63 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
-//CREATE Allow new users to register
-/* We'll expect JSON in this format
-{
-  ID: Integer,
-  Username: String,
-  Password: String,
-  Email: String,
-  Birthday: Date
-}*/
+/**
+ * Allows new users to register by providing a username, password, email, and birthday.
+ * @param {Object} req - The request object containing the user data (Username, Password, Email, Birthday).
+ * @param {Object} res - The response object to send back the status or error message.
+ * @returns {Object} JSON response with the user data or error message.
+ */
+
 app.post('/users', 
-// Validation logic here for request
-//you can either use a chain of methods like .not().isEmpty()
-//which means "opposite of isEmpty" in plain english "is not empty"
-//or use .isLength({min: 5}) which means
-//minimum value of 5 characters are only allowed
-[
-  check('Username', 'Username is required').isLength({min: 5}),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password', 'Password is required').not().isEmpty(),
-  check('Email', 'Email does not appear to be valid').isEmail()
-],async (req, res) => {
-  // check the validation object for errors
-  let errors = validationResult(req);
+  /**
+   * Validates the request body data for user registration.
+   * @param {Object} req - The request object containing the user data.
+   * @param {Object} res - The response object containing any validation errors.
+   * @returns {Object} Validation errors if any.
+   */
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ],async (req, res) => {
+    let errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  await Users.findOne({ Username: req.body.Username}) // Search to see if a user with the requested username already exists
-  .then((user) => {
-    if (user) {
-    //If the user is found, send a response that it already exists
-      return res.status(400).send(req.body.Username + 'already exists');
-    } else {
-      Users
-        .create({
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        })
-        .then((user) => {res.status(201).json(user) })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-      })
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-  })
-  .catch((error) => {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    await Users.findOne({ Username: req.body.Username}) // Search to see if a user with the requested username already exists
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) => {res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
   });
-});
 
-//READ Get all users
+/**
+ * Returns a list of all registered users.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object containing the list of users.
+ * @returns {Array} JSON array of all users.
+ */
 app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.find()
     .then((users) => {
@@ -92,7 +93,12 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
     });
 });
 
-//READ Get a user by username
+/**
+ * Returns the details of a specific user by their username.
+ * @param {Object} req - The request object containing the username in the URL parameter.
+ * @param {Object} res - The response object containing the user data.
+ * @returns {Object} JSON object with user data.
+ */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }),
 [
   check('Username', 'Username is required').isLength({min: 5}),
@@ -108,55 +114,51 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });  
 
-//UPDATE a user's info, by username
-/* We’ll expect JSON in this format
-{
-  Username: String,
-  (required)
-  Password: String,
-  (required)
-  Email: String,
-  (required)
-  Birthday: Date
-}*/
+/**
+ * Updates a user's information based on their username.
+ * @param {Object} req - The request object containing updated user data.
+ * @param {Object} res - The response object containing the updated user data.
+ * @returns {Object} JSON object with the updated user data.
+ */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), 
-[
-  check('Username', 'Username is required').isLength({min: 5}),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password', 'Password is required').not().isEmpty(),
-  check('Email', 'Email does not appear to be valid').isEmail()
-], async (req, res) => {
-  // check the validation object for errors
-  let errors = validationResult(req);
+  [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+  ], async (req, res) => {
+    let errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-  // CONDITION TO CHECK ADDED HERE
-  if(req.user.Username !== req.params.Username){
-    return res.status(400).send('Permission denied');
-  }
-  // CONDITION ENDS
-  await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
-    {
-      Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
     }
-  },
-  { new: true }) // This line makes sure that the updated document is returned
-  .then((updatedUser) => {
-    res.json(updatedUser);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  })
+    if(req.user.Username !== req.params.Username){
+      return res.status(400).send('Permission denied');
+    }
+    await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+      {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
+      }
+    },
+    { new: true }) // This line makes sure that the updated document is returned
+    .then((updatedUser) => {
+      res.json(updatedUser);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    })
+  });
 
-});
-
-//CREATE Allow users to add a movie to their list of favorites (showing only a text that a movie has been added)
+/**
+ * Allows users to add a movie to their list of favorite movies.
+ * @param {Object} req - The request object containing the username and movie ID in the URL parameters.
+ * @param {Object} res - The response object confirming that the movie has been added.
+ * @returns {Object} JSON object with updated user data.
+ */
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),
 [
   check('Username', 'Username is required').isLength({min: 5}),
@@ -176,7 +178,12 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
   });
 });
 
-//DELETE Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
+/**
+ * Allows users to remove a movie from their list of favorite movies.
+ * @param {Object} req - The request object containing the username and movie ID in the URL parameters.
+ * @param {Object} res - The response object confirming that the movie has been removed.
+ * @returns {Object} JSON object with updated user data.
+ */
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), 
 [
   check('Username', 'Username is required').isLength({min: 5}),
@@ -196,7 +203,13 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
   });
 });
 
-//DELETE Allow existing users to deregister (showing only a text that a user email has been removed)
+
+/**
+ * Allows existing users to deregister by deleting their account.
+ * @param {Object} req - The request object containing the username in the URL parameter.
+ * @param {Object} res - The response object confirming the user has been deleted.
+ * @returns {Object} Confirmation message or error.
+ */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 [
   check('Username', 'Username is required').isLength({min: 5}),
@@ -216,7 +229,12 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
-//READ. Return a list of ALL movies to the user
+/**
+ * Returns a list of all movies available in the database.
+ * @param {Object} req - The request object containing authentication details.
+ * @param {Object} res - The response object containing the list of movies.
+ * @returns {Array} JSON array of all movies.
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
     .then((movies) => {
@@ -228,7 +246,12 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
     });
 });  
 
-//READ Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+/**
+ * Returns detailed information about a single movie by its title, including description, genre, director, image URL, and whether it’s featured.
+ * @param {Object} req - The request object containing the movie title in the URL parameter.
+ * @param {Object} res - The response object containing the movie data.
+ * @returns {Object} JSON object with movie details.
+ */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ Title: req.params.Title })
   .then((movies) => {
@@ -240,7 +263,12 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
   });
 });  
 
-//READ Return data about a genre (description) by name/title
+/**
+ * Returns detailed information about movies of a specific genre by name/title.
+ * @param {Object} req - The request object containing the genre name in the URL parameter.
+ * @param {Object} res - The response object containing movies of that genre.
+ * @returns {Array} JSON array of movies in the specified genre.
+ */
 app.get('/movies/Genre/:genreName', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Genre.Name": req.params. genreName})
   .then((movies) => {
@@ -252,7 +280,12 @@ app.get('/movies/Genre/:genreName', passport.authenticate('jwt', { session: fals
   });
 });  
 
-//READ Return data about a director (bio, birth year, death year) by name
+/**
+ * Returns detailed information about movies directed by a specific director, including bio, birth year, and death year.
+ * @param {Object} req - The request object containing the director's name in the URL parameter.
+ * @param {Object} res - The response object containing movies by the specified director.
+ * @returns {Array} JSON array of movies directed by the specified director.
+ */
 app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Director.Name": req.params. directorName})
   .then((movies) => {
@@ -264,6 +297,11 @@ app.get('/movies/director/:directorName', passport.authenticate('jwt', { session
   });
 });  
 
+/**
+ * Starts the Express server to listen for incoming requests.
+ * @param {number} port - The port number to run the server on.
+ * @returns {void} Logs a message indicating the server is running.
+ */
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
