@@ -1,3 +1,9 @@
+/**
+ * @module index
+ * @description This module is the entry point for the application and handles all the routes for the API.
+ * It connects to MongoDB and defines various routes for user and movie management.
+ */
+
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
@@ -26,19 +32,20 @@ require('./passport');
 const { check, validationResult } = require('express-validator');
 
 /**
- * Allows new users to register by providing a username, password, email, and birthday.
+ * @namespace UserRoutes
+ * @description Routes related to user management.
+ */
+
+/**jsdoc
+ * @function registerUser
+ * @memberof UserRoutes
+ * @description Allows new users to register by providing a username, password, email, and birthday.
  * @param {Object} req - The request object containing the user data (Username, Password, Email, Birthday).
  * @param {Object} res - The response object to send back the status or error message.
  * @returns {Object} JSON response with the user data or error message.
  */
 
-app.post('/users', 
-  /**
-   * Validates the request body data for user registration.
-   * @param {Object} req - The request object containing the user data.
-   * @param {Object} res - The response object containing any validation errors.
-   * @returns {Object} Validation errors if any.
-   */
+app.post('/users',
   [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -77,7 +84,9 @@ app.post('/users',
   });
 
 /**
- * Returns a list of all registered users.
+ * @function getUsers
+ * @memberof UserRoutes
+ * @description Returns a list of all registered users.
  * @param {Object} req - The request object.
  * @param {Object} res - The response object containing the list of users.
  * @returns {Array} JSON array of all users.
@@ -94,7 +103,9 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 });
 
 /**
- * Returns the details of a specific user by their username.
+ * @function getSingleUser
+ * @memberof UserRoutes
+ * @description Returns a single registered user's information. 
  * @param {Object} req - The request object containing the username in the URL parameter.
  * @param {Object} res - The response object containing the user data.
  * @returns {Object} JSON object with user data.
@@ -115,7 +126,9 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }),
 });  
 
 /**
- * Updates a user's information based on their username.
+ * @function UpdateUser
+ * @memberof UserRoutes
+ * @description Allows a user to  update their information. 
  * @param {Object} req - The request object containing updated user data.
  * @param {Object} res - The response object containing the updated user data.
  * @returns {Object} JSON object with the updated user data.
@@ -154,7 +167,9 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
   });
 
 /**
- * Allows users to add a movie to their list of favorite movies.
+ * @function addFavroiteMovie
+ * @memberof UserRoutes
+ * @description Allows users to add a movie to their list of favorite movies.
  * @param {Object} req - The request object containing the username and movie ID in the URL parameters.
  * @param {Object} res - The response object confirming that the movie has been added.
  * @returns {Object} JSON object with updated user data.
@@ -179,7 +194,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
 });
 
 /**
- * Allows users to remove a movie from their list of favorite movies.
+ * @function deleteFavroiteMovie
+ * @memberof UserRoutes
+ * @description Allows users to remove a movie from their list of favorite movies.
  * @param {Object} req - The request object containing the username and movie ID in the URL parameters.
  * @param {Object} res - The response object confirming that the movie has been removed.
  * @returns {Object} JSON object with updated user data.
@@ -205,7 +222,9 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
 
 
 /**
- * Allows existing users to deregister by deleting their account.
+ * @function deleteUser
+ * @memberof UserRoutes
+ * @description Allows existing users to deregister by deleting their account.
  * @param {Object} req - The request object containing the username in the URL parameter.
  * @param {Object} res - The response object confirming the user has been deleted.
  * @returns {Object} Confirmation message or error.
@@ -229,8 +248,15 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     });
 });
 
+/** 
+ * @namespace MovieRoutes
+ * @description Routes related to movie management.
+ */
+
 /**
- * Returns a list of all movies available in the database.
+ * @function getMovies
+ * @memberof MovieRoutes
+ * @description Returns a list of all movies available in the database.
  * @param {Object} req - The request object containing authentication details.
  * @param {Object} res - The response object containing the list of movies.
  * @returns {Array} JSON array of all movies.
@@ -247,7 +273,9 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
 });  
 
 /**
- * Returns detailed information about a single movie by its title, including description, genre, director, image URL, and whether it’s featured.
+ * @function getMovieDetails
+ * @memberof MovieRoutes
+ * @description Returns detailed information about a single movie by its title.
  * @param {Object} req - The request object containing the movie title in the URL parameter.
  * @param {Object} res - The response object containing the movie data.
  * @returns {Object} JSON object with movie details.
@@ -264,7 +292,9 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), asyn
 });  
 
 /**
- * Returns detailed information about movies of a specific genre by name/title.
+ * @function getGenreDetails
+ * @memberof MovieRoutes
+ * @description Returns detailed information about movies of a specific genre by name/title.
  * @param {Object} req - The request object containing the genre name in the URL parameter.
  * @param {Object} res - The response object containing movies of that genre.
  * @returns {Array} JSON array of movies in the specified genre.
@@ -281,7 +311,9 @@ app.get('/movies/Genre/:genreName', passport.authenticate('jwt', { session: fals
 });  
 
 /**
- * Returns detailed information about movies directed by a specific director, including bio, birth year, and death year.
+ * @function getDirectorDetails
+ * @memberof MovieRoutes
+ * @description Returns detailed information about movies directed by a specific director, including bio, birth year, and death year.
  * @param {Object} req - The request object containing the director's name in the URL parameter.
  * @param {Object} res - The response object containing movies by the specified director.
  * @returns {Array} JSON array of movies directed by the specified director.
