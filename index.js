@@ -11,6 +11,7 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
+console.log("Mongo URI:", process.env.CONNECTION_URI); // Debugging line
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB successfully!'))
   .catch((err) => console.error('Error connecting to MongoDB:', err));
