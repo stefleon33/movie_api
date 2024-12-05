@@ -3,6 +3,7 @@
  * @description This module is the entry point for the application and handles all the routes for the API.
  * It connects to MongoDB and defines various routes for user and movie management.
  */
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -10,7 +11,9 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB successfully!'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 
 const express = require('express'),
