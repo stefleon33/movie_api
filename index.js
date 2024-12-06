@@ -3,7 +3,7 @@
  * @description This module is the entry point for the application and handles all the routes for the API.
  * It connects to MongoDB and defines various routes for user and movie management.
  */
-require('dotenv').config();
+require('dotenv').config({ path: '/home/ubuntu/movie_api/.env' });
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -11,10 +11,15 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-console.log("Mongo URI:", process.env.CONNECTION_URI); // Debugging line
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB successfully!'))
-  .catch((err) => console.error('Error connecting to MongoDB:', err));
+console.log("Mongo URI from .env file:", process.env.CONNECTION_URI); // Log the value of CONNECTION_URI
+
+if (!process.env.CONNECTION_URI) {
+    console.error("Error: CONNECTION_URI is not set in the .env file");
+} else {
+    mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB successfully!'))
+    .catch((err) => console.error('Error connecting to MongoDB:', err));
+}
 
 
 const express = require('express'),
