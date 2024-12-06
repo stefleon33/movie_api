@@ -3,7 +3,7 @@
  * @description This module is the entry point for the application and handles all the routes for the API.
  * It connects to MongoDB and defines various routes for user and movie management.
  */
-require('dotenv').config({ path: '/home/ubuntu/movie_api/.env' });
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
