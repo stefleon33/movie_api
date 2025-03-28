@@ -19,7 +19,6 @@ if (!process.env.CONNECTION_URI) {
     .catch((err) => console.error('Error connecting to MongoDB:', err));
 }
 
-
 const express = require('express'),
   app = express(),
   bodyParser = require('body-parser'),
