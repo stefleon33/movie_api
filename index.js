@@ -11,8 +11,6 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-console.log("Mongo URI from .env file:", process.env.CONNECTION_URI); // Log the value of CONNECTION_URI
-
 if (!process.env.CONNECTION_URI) {
     console.error("Error: CONNECTION_URI is not set in the .env file");
 } else {
